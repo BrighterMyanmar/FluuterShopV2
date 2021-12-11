@@ -1,0 +1,41 @@
+name: shopvtwo
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+    - family: Title
+      fonts:
+        - asset: assets/fonts/Domine-Bold.ttf
+        - asset: assets/fonts/Domine-Regular.ttf
+          style: italic
+    - family: English
+      fonts:
+        - asset: assets/fonts/OpenSans-Bold.ttf
+        - asset: assets/fonts/OpenSans-Italic.ttf
+        - asset: assets/fonts/OpenSans-Regular.ttf
+          style: italic
+    - family: Burmese
+      fonts:
+        - asset: assets/fonts/Padauk-Bold.ttf
+        - asset: assets/fonts/Padauk-Regular.ttf
+          weight: 700
