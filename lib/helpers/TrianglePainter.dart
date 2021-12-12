@@ -9,7 +9,7 @@ class TrianglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = Vary.accent;
+    paint.color = Vary.secondary;
 
     var upPath = Path();
     upPath.moveTo(mSize.width / 3, 0);

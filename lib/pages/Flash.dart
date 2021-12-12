@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopvtwo/helpers/TrianglePainter.dart';
+import 'package:shopvtwo/utils/Vary.dart';
 
 class Flash extends StatefulWidget {
   const Flash({Key? key}) : super(key: key);
@@ -9,6 +10,18 @@ class Flash extends StatefulWidget {
 }
 
 class _FlashState extends State<Flash> {
+  _loadData() async {
+    await Future.delayed(Duration(seconds: 5));
+    // Navigator.pushNamed(context, "/home");
+    Navigator.pushReplacementNamed(context, "/home");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     var mSize = MediaQuery.of(context).size;
@@ -27,6 +40,7 @@ class _FlashState extends State<Flash> {
               child: Text("Food Monkey",
                   style: TextStyle(
                       fontSize: 35,
+                      color: Vary.normal,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Title")),
             ),
