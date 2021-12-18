@@ -1,5 +1,9 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:shopvtwo/models/Category.dart';
+import 'package:shopvtwo/models/Tag.dart';
+import 'package:shopvtwo/pages/ProductPage.dart';
+import 'package:shopvtwo/utils/Api.dart';
 import 'package:shopvtwo/utils/Vary.dart';
 
 class Home extends StatefulWidget {
@@ -10,81 +14,95 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<String> images = ["1.png", "2.png", "3.png", "4.png", "5.png"];
-  List<String> categories = [
-    "1.png",
-    "2.png",
-    "3.png",
-    "4.png",
-    "5.png",
-    "6.png",
-    "7.png",
-    "8.png",
-    "9.png",
-    "10.png"
-  ];
+  List<Tag> tags = [];
+  List<Category> categories = [];
+
+  _loadCategories() async {
+    categories = await Api.getAllCats();
+    tags = await Api.getAllTags();
+    if (categories.length > 0 && tags.length > 0) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-      child: SafeArea(
-          child:
+          child: SafeArea(
+              child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        _makeTitleText("Tags"),
-        SizedBox(height: 10),
-        Container(
-            height: 150,
-            child: Swiper(
-              itemCount: images.length,
-              itemBuilder: (context, index) {
-                return Image.asset("assets/images/${images[index]}");
-              },
-              scale: 0.5,
-              viewportFraction: 0.5,
-              autoplay: true,
-              duration: 1000,
-            )),
-        SizedBox(height: 10),
-        _makeTitleText("Categories"),
-        Container(
-          height: 500,
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: GridView.builder(
-              shrinkWrap: true,
-              itemCount: categories.length,
-              physics: ScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
-              itemBuilder: (context, index) => _makeCategoryAction(index)),
-        )
-      ])),
-    ));
+                _makeTitleText("Tags"),
+                SizedBox(height: 10),
+                Container(
+                    height: 150,
+                    child: Swiper(
+                      itemCount: tags.length-1,
+                      itemBuilder: (context, index) {
+                        return Image.network(tags[index].image);
+                      },
+                      scale: 0.5,
+                      viewportFraction: 0.5,
+                      autoplay: true,
+                      duration: 1000,
+                    )),
+                SizedBox(height: 10),
+                _makeTitleText("Categories"),
+                Container(
+                  height: 500,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: categories.length,
+                      physics: ScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10),
+                      itemBuilder: (context, index) =>
+                          _makeCategoryAction(categories[index])),
+                )
+              ])),
+        ));
   }
 
-  _makeCategoryAction(index) {
-    return Card(
-      color: Vary.normal,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            width: 100,
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 3),
-            color: Vary.accent,
-            child: Center(
-              child: Text("Big Burger",
-                  style: TextStyle(
-                      fontSize: 20, fontFamily: "English", color: Vary.primary)),
+  _makeCategoryAction(Category category) {
+    return InkWell(
+      onTap: () {
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => ProductPage()));
+      },
+      child: Card(
+        color: Vary.normal,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: 100,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+              color: Vary.accent,
+              child: Center(
+                child: Text(category.name,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: "English",
+                        color: Vary.primary)),
+              ),
             ),
-          ),
-          SizedBox(height:10),
-          Image.asset(
-            "assets/images/${categories[index]}",
-            width: 120.0,
-            height: 120.0,
-          )
-        ],
+            SizedBox(height: 10),
+            Image.network(
+              category.image,
+              width: 120.0,
+              height: 120.0,
+            )
+          ],
+        ),
       ),
     );
   }

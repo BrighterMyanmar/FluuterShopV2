@@ -9,4 +9,5 @@ class Vary {
   static const Color darkGrey = Color(0xff202020);
   static const Color transparentYellow = Color.fromRGBO(253, 184, 70, 0.7);
   static const String BASE_URL = "http://13.214.58.126:3000";
+  static const String API_URL = "$BASE_URL/api";
 }

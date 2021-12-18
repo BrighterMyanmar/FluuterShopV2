@@ -11,7 +11,7 @@ class Flash extends StatefulWidget {
 
 class _FlashState extends State<Flash> {
   _loadData() async {
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 1));
     // Navigator.pushNamed(context, "/home");
     Navigator.pushReplacementNamed(context, "/home");
   }
