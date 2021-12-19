@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopvtwo/models/Product.dart';
 import 'package:shopvtwo/utils/Api.dart';
 
 class ProductPage extends StatefulWidget {
@@ -13,8 +14,23 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   String id, type;
+  int page = 1;
 
   _ProductPageState(this.id, this.type);
+
+  List<Product> products = [];
+
+  _loadProducts() async {
+    List<Product> pros = await Api.getPagiProducts(id: id, page: page);
+    print(pros.length);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

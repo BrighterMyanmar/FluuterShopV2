@@ -1,9 +1,10 @@
 import 'dart:convert';
-
-import 'package:shopvtwo/models/Category.dart';
-import 'package:shopvtwo/models/Tag.dart';
-import 'package:shopvtwo/utils/Vary.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopvtwo/models/Category.dart';
+import 'package:shopvtwo/models/Product.dart';
+import 'package:shopvtwo/models/Tag.dart';
+
+import 'Vary.dart';
 
 class Api {
   static Future<List<Category>> getAllCats() async {
@@ -34,5 +35,19 @@ class Api {
       print(responseData["msg"]);
     }
     return tags;
+  }
+
+  static Future<List<Product>> getPagiProducts({id,page}) async {
+    List<Product> products = [];
+    Uri uri = Uri.parse("${Vary.API_URL}/catproducts/$id/$page");
+    var response = await http.get(uri);
+    var responseData = jsonDecode(response.body);
+    if (responseData["con"]) {
+      List lisy = responseData["result"] as List;
+      products = lisy.map((e) => Product.fromJson(e)).toList();
+    } else {
+      print(responseData["msg"]);
+    }
+    return products;
   }
 }
