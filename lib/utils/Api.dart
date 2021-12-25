@@ -37,9 +37,23 @@ class Api {
     return tags;
   }
 
-  static Future<List<Product>> getPagiProducts({id,page}) async {
+  static Future<List<Product>> catProducts({id, page}) async {
     List<Product> products = [];
     Uri uri = Uri.parse("${Vary.API_URL}/catproducts/$id/$page");
+    var response = await http.get(uri);
+    var responseData = jsonDecode(response.body);
+    if (responseData["con"]) {
+      List lisy = responseData["result"] as List;
+      products = lisy.map((e) => Product.fromJson(e)).toList();
+    } else {
+      print(responseData["msg"]);
+    }
+    return products;
+  }
+
+  static Future<List<Product>> tagproduct({id, page}) async {
+    List<Product> products = [];
+    Uri uri = Uri.parse("${Vary.API_URL}/tagproducts/$id/$page");
     var response = await http.get(uri);
     var responseData = jsonDecode(response.body);
     if (responseData["con"]) {

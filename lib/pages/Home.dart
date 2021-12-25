@@ -86,8 +86,11 @@ class _HomeState extends State<Home> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    ProductPage(id: category.id, type: "cat")));
+                builder: (context) => ProductPage(
+                      id: category.id,
+                      type: "cat",
+                      tags: tags,
+                    )));
       },
       child: Card(
         color: Vary.normal,
