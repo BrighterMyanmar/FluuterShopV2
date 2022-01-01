@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopvtwo/helpers/ArchPainter.dart';
 import 'package:shopvtwo/models/Product.dart';
 import 'package:shopvtwo/pages/ProductDetail.dart';
+import 'package:shopvtwo/utils/Kpo.dart';
 import 'package:shopvtwo/utils/Vary.dart';
 
 class Preview extends StatefulWidget {
@@ -22,7 +23,15 @@ class _PreviewState extends State<Preview> {
   Widget build(BuildContext context) {
     var msize = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(title: Text("Preview")),
+        appBar: AppBar(
+          title: Text("Preview"),
+          actions: [
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Kpo.getShoppingCart(context),
+            )
+          ],
+        ),
         body: Stack(
           children: [
             CustomPaint(
@@ -57,7 +66,10 @@ class _PreviewState extends State<Preview> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Kpo.addToCart(product);
+                            setState(() {});
+                          },
                           child: Row(
                             children: [
                               Padding(

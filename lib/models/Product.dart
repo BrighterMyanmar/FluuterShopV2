@@ -14,6 +14,7 @@ class Product {
   double rating;
   bool status;
   String id, name, brand, size, desc, detail, created;
+  int count = 1;
 
   Product(
       {required this.images,

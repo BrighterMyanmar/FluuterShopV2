@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shopvtwo/models/Product.dart';
+import 'package:shopvtwo/utils/Kpo.dart';
 import 'package:shopvtwo/utils/Vary.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -24,6 +25,17 @@ class _ProductDetailState extends State<ProductDetail> {
         appBar: AppBar(
           brightness: Brightness.dark,
           title: Text("Product Detail"),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                  onTap: () {
+                    Kpo.addToCart(product);
+                    setState(() {});
+                  },
+                  child: Icon(Icons.add)),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -51,33 +63,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       fontFamily: "Title",
                       color: Vary.normal),
                 ),
-                Stack(
-                  overflow: Overflow.visible,
-                  children: [
-                    Icon(
-                      Icons.shopping_cart,
-                      size: 50.0,
-                      color: Vary.accent,
-                    ),
-                    Positioned(
-                      right: -5,
-                      top: -10,
-                      child: Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                              color: Vary.normal,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25))),
-                          child: Center(
-                              child: Text("19",
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white)))),
-                    )
-                  ],
-                ),
+                Kpo.getShoppingCart(context)
               ]),
               SizedBox(height: 20),
               Row(

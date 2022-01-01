@@ -4,6 +4,7 @@ import 'package:shopvtwo/models/Product.dart';
 import 'package:shopvtwo/models/Tag.dart';
 import 'package:shopvtwo/pages/Preivew.dart';
 import 'package:shopvtwo/utils/Api.dart';
+import 'package:shopvtwo/utils/Kpo.dart';
 import 'package:shopvtwo/utils/Vary.dart';
 
 class ProductPage extends StatefulWidget {
@@ -57,31 +58,43 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            _buildCustomNav(),
-            Expanded(
-                child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (!_isLoading &&
-                    scrollInfo.metrics.pixels ==
-                        scrollInfo.metrics.maxScrollExtent) {
-                  _loadProducts();
-                }
-                return false;
-              },
-              child: _buildGridView(),
-            )),
-            Container(
-              child: _isLoading ? CircularProgressIndicator() : null,
+        appBar: AppBar(
+          // backgroundColor: Colors.pinkAccent,
+          // brightness: Brightness.dark,
+          // elevation: 1,
+          title: Text("Products"),
+          actions: [
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Kpo.getShoppingCart(context),
             )
           ],
         ),
-      ),
-    ));
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                _buildCustomNav(),
+                Expanded(
+                    child: NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification scrollInfo) {
+                    if (!_isLoading &&
+                        scrollInfo.metrics.pixels ==
+                            scrollInfo.metrics.maxScrollExtent) {
+                      _loadProducts();
+                    }
+                    return false;
+                  },
+                  child: _buildGridView(),
+                )),
+                Container(
+                  child: _isLoading ? CircularProgressIndicator() : null,
+                )
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _buildCustomNav() {
@@ -153,10 +166,16 @@ class _ProductPageState extends State<ProductPage> {
           Image.network(product.images[0], width: 160, height: 120),
           SizedBox(height: 2),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            Icon(
-              Icons.shopping_cart,
-              color: Vary.accent,
-              size: 32,
+            InkWell(
+              onTap: () {
+                Kpo.addToCart(product);
+                setState(() {});
+              },
+              child: Icon(
+                Icons.shopping_cart,
+                color: Vary.accent,
+                size: 32,
+              ),
             ),
             Text("${product.price} Ks",
                 style: TextStyle(
