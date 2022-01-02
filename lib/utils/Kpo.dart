@@ -69,6 +69,7 @@ class Kpo {
   }
 
   static removeProduct(product) {
+    product.count = 1;
     cartProducts.removeWhere((prod) => prod.id == product.id);
   }
 

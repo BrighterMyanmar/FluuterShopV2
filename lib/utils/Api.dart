@@ -64,4 +64,17 @@ class Api {
     }
     return products;
   }
+
+  static Future<bool> login({json}) async {
+    Uri uri = Uri.parse("${Vary.API_URL}/login");
+    var response = await http.post(uri, body: json);
+    var responseData = jsonDecode(response.body);
+    if (responseData["con"]) {
+      Vary.sucMsg = responseData["msg"];
+      return true;
+    } else {
+      Vary.errMsg = responseData["msg"];
+      return false;
+    }
+  }
 }
