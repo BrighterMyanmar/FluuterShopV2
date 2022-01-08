@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:shopvtwo/models/Product.dart';
 import 'package:shopvtwo/pages/CartPage.dart';
 import 'package:shopvtwo/utils/Vary.dart';
@@ -79,5 +80,14 @@ class Kpo {
       total += prod.count * prod.price;
     });
     return total;
+  }
+
+  static toast(context, text) {
+    showToast(text,
+        context: context,
+        backgroundColor: Vary.normal,
+        textStyle: TextStyle(fontFamily: "Burmese", color: Vary.primary),
+        position: StyledToastPosition.center,
+        animation: StyledToastAnimation.scale);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopvtwo/models/User.dart';
 
 class Vary {
   static const Color primary = Color(0xFFF6F6F6);
@@ -14,5 +15,12 @@ class Vary {
   static String errMsg = "";
   static String sucMsg = "";
 
+  static User? user;
 
+  static Map<String, String> headers = {"content-type": "application/json"};
+
+  static Map<String, String> tokenHeader = {
+    "content-type": "application/json",
+    "authorization": "Bearer ${user?.token}"
+  };
 }

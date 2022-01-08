@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shopvtwo/helpers/TrianglePainter.dart';
 import 'package:shopvtwo/pages/Register.dart';
 import 'package:shopvtwo/utils/Api.dart';
+import 'package:shopvtwo/utils/Kpo.dart';
 import 'package:shopvtwo/utils/Vary.dart';
 
 class Login extends StatefulWidget {
@@ -15,7 +16,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   var _formKey = GlobalKey<FormState>();
-  var _phoneController = TextEditingController(text: "0976543234");
+  var _phoneController = TextEditingController(text: "09123123123");
   var _passwordController = TextEditingController(text: "123123123");
   var _obsecure = true;
 
@@ -50,7 +51,24 @@ class _LoginState extends State<Login> {
                         TextFormField(
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
+                          validator: (v) {
+                            if (v!.isEmpty) {
+                              return "Phone နံပါတ် ဖြည့်ပါ";
+                            }
+                            if (v.length < 7) {
+                              return "Phone နံပါတ် မှားနေပါ";
+                            }
+                            return null;
+                          },
+                          onChanged: (v) {
+                            if (v.length < 4) {
+                              print("Error");
+                            } else {
+                              print(v);
+                            }
+                          },
                           decoration: InputDecoration(
+                            errorStyle: TextStyle(fontFamily: "Burmese"),
                             prefixIcon: Icon(Icons.phone),
                             labelText: "Phone",
                             labelStyle:
@@ -64,6 +82,15 @@ class _LoginState extends State<Login> {
                           obscureText: _obsecure,
                           controller: _passwordController,
                           keyboardType: TextInputType.text,
+                          validator: (v) {
+                            if (v!.isEmpty) {
+                              return "Password ဖြည့်ပါ";
+                            }
+                            if (v.length < 8) {
+                              return "Password အနည်းဆုံး ၈ လုံး";
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
                             suffixIcon: InkWell(
@@ -109,15 +136,17 @@ class _LoginState extends State<Login> {
                         children: [
                           TextButton(
                               onPressed: () async {
-                                var json = jsonEncode({
-                                  "phone": _phoneController.text,
-                                  "password": _passwordController.text
-                                });
-                                bool bol = await Api.login(json: json);
-                                if (bol) {
-                                  Navigator.pop(context);
-                                } else {
-                                  // Show Error Message using Toast
+                                if (_formKey.currentState!.validate()) {
+                                  var json = jsonEncode({
+                                    "phone": _phoneController.text,
+                                    "password": _passwordController.text
+                                  });
+                                  bool bol = await Api.login(json: json);
+                                  if (bol) {
+                                    Navigator.pop(context);
+                                  } else {
+                                    Kpo.toast(context, Vary.errMsg);
+                                  }
                                 }
                               },
                               style: TextButton.styleFrom(

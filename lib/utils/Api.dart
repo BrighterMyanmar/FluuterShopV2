@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shopvtwo/models/Category.dart';
 import 'package:shopvtwo/models/Product.dart';
 import 'package:shopvtwo/models/Tag.dart';
+import 'package:shopvtwo/models/User.dart';
 
 import 'Vary.dart';
 
@@ -65,11 +66,26 @@ class Api {
     return products;
   }
 
-  static Future<bool> login({json}) async {
-    Uri uri = Uri.parse("${Vary.API_URL}/login");
-    var response = await http.post(uri, body: json);
+  static Future<bool> register({json}) async {
+    Uri uri = Uri.parse("${Vary.API_URL}/register");
+    var response = await http.post(uri, body: json, headers: Vary.headers);
+    print(response.body);
     var responseData = jsonDecode(response.body);
     if (responseData["con"]) {
+      Vary.sucMsg = responseData["msg"];
+      return true;
+    } else {
+      Vary.errMsg = responseData["msg"];
+      return false;
+    }
+  }
+
+  static Future<bool> login({json}) async {
+    Uri uri = Uri.parse("${Vary.API_URL}/login");
+    var response = await http.post(uri,body: json,headers:Vary.headers);
+    var responseData = jsonDecode(response.body);
+    if (responseData["con"]) {
+      Vary.user = User.fromJson(responseData["result"]);
       Vary.sucMsg = responseData["msg"];
       return true;
     } else {
