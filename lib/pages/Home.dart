@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:shopvtwo/models/Category.dart';
 import 'package:shopvtwo/models/Tag.dart';
+import 'package:shopvtwo/pages/HistoryPage.dart';
 import 'package:shopvtwo/pages/ProductPage.dart';
 import 'package:shopvtwo/utils/Api.dart';
 import 'package:shopvtwo/utils/Vary.dart';
@@ -38,8 +39,19 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text("Home"),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: InkWell(
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HistoryPage())),
+                  child: Icon(Icons.history)),
+            )
+          ],
+        ),
         body: SingleChildScrollView(
-      child: SafeArea(
           child: _isLoading
               ? CircularProgressIndicator()
               : Column(
@@ -76,8 +88,8 @@ class _HomeState extends State<Home> {
                             itemBuilder: (context, index) =>
                                 _makeCategoryAction(categories[index])),
                       )
-                    ])),
-    ));
+                    ]),
+        ));
   }
 
   _makeCategoryAction(Category category) {

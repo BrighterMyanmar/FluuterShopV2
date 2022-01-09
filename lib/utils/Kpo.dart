@@ -90,4 +90,15 @@ class Kpo {
         position: StyledToastPosition.center,
         animation: StyledToastAnimation.scale);
   }
+
+  static generateOrder() {
+    List<Map> carList = [];
+    cartProducts.forEach((pro) {
+      var map = new Map();
+      map["id"] = pro.id;
+      map["count"] = pro.count;
+      carList.add(map);
+    });
+    return carList;
+  }
 }

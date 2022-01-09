@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shopvtwo/models/Category.dart';
+import 'package:shopvtwo/models/History.dart';
 import 'package:shopvtwo/models/Product.dart';
 import 'package:shopvtwo/models/Tag.dart';
 import 'package:shopvtwo/models/User.dart';
@@ -82,7 +83,7 @@ class Api {
 
   static Future<bool> login({json}) async {
     Uri uri = Uri.parse("${Vary.API_URL}/login");
-    var response = await http.post(uri,body: json,headers:Vary.headers);
+    var response = await http.post(uri, body: json, headers: Vary.headers);
     var responseData = jsonDecode(response.body);
     if (responseData["con"]) {
       Vary.user = User.fromJson(responseData["result"]);
@@ -92,5 +93,33 @@ class Api {
       Vary.errMsg = responseData["msg"];
       return false;
     }
+  }
+
+  static Future<bool> orderUpload({json}) async {
+    Uri uri = Uri.parse("${Vary.API_URL}/orders");
+    var response = await http.post(uri, body: json, headers: Vary.tokenHeader);
+    var responseData = jsonDecode(response.body);
+    if (responseData["con"]) {
+      Vary.sucMsg = responseData["msg"];
+      return true;
+    } else {
+      Vary.errMsg = responseData["msg"];
+      return false;
+    }
+  }
+
+  static Future<List<History>> getHistory() async {
+    List<History> history = [];
+
+    Uri uri = Uri.parse("${Vary.API_URL}/orders");
+    var response = await http.get(uri,headers: Vary.tokenHeader);
+    var responseData = jsonDecode(response.body);
+    if (responseData["con"]) {
+      List lisy = responseData["result"] as List;
+      history = lisy.map((e) => History.fromJson(e)).toList();
+    } else {
+      Vary.errMsg = responseData["msg"];
+    }
+    return history;
   }
 }

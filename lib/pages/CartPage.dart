@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shopvtwo/models/Product.dart';
 import 'package:shopvtwo/pages/Login.dart';
+import 'package:shopvtwo/utils/Api.dart';
 import 'package:shopvtwo/utils/Kpo.dart';
 import 'package:shopvtwo/utils/Vary.dart';
 
@@ -177,9 +180,20 @@ class _CartPageState extends State<CartPage> {
           ),
           SizedBox(height: 20),
           TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Login()));
+              onPressed: () async {
+                if (Vary.user == null) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Login()));
+                } else {
+                  var json = jsonEncode({"items": Kpo.generateOrder()});
+                  bool bol = await Api.orderUpload(json: json);
+                  if (bol) {
+                    Kpo.cartProducts = [];
+                    Navigator.pushNamed(context, "/home");
+                  } else {
+                    Kpo.toast(context, Vary.errMsg);
+                  }
+                }
               },
               style: TextButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
