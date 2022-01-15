@@ -2,7 +2,9 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:shopvtwo/models/Category.dart';
 import 'package:shopvtwo/models/Tag.dart';
+import 'package:shopvtwo/pages/Chat.dart';
 import 'package:shopvtwo/pages/HistoryPage.dart';
+import 'package:shopvtwo/pages/Login.dart';
 import 'package:shopvtwo/pages/ProductPage.dart';
 import 'package:shopvtwo/utils/Api.dart';
 import 'package:shopvtwo/utils/Vary.dart';
@@ -45,8 +47,37 @@ class _HomeState extends State<Home> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
-                  onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HistoryPage())),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Chat()));
+                    // if (Vary.user != null) {
+                    //   Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => HistoryPage()));
+                    // } else {
+                    //   Navigator.push(context,
+                    //       MaterialPageRoute(builder: (context) => Login()));
+                    // }
+                  },
+                  child: Icon(Icons.chat)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: InkWell(
+                  onTap: () {
+                    if (Vary.user != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HistoryPage()));
+                    } else {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Login()));
+                    }
+                  },
                   child: Icon(Icons.history)),
             )
           ],
@@ -55,40 +86,40 @@ class _HomeState extends State<Home> {
           child: _isLoading
               ? CircularProgressIndicator()
               : Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                      _makeTitleText("Tags"),
-                      SizedBox(height: 10),
-                      Container(
-                          height: 150,
-                          child: Swiper(
-                            itemCount: tags.length - 1,
-                            itemBuilder: (context, index) {
-                              return Image.network(tags[index].image);
-                            },
-                            scale: 0.5,
-                            viewportFraction: 0.5,
-                            autoplay: true,
-                            duration: 1000,
-                          )),
-                      SizedBox(height: 10),
-                      _makeTitleText("Categories"),
-                      Container(
-                        height: 500,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: GridView.builder(
-                            shrinkWrap: true,
-                            itemCount: categories.length,
-                            physics: ScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10),
-                            itemBuilder: (context, index) =>
-                                _makeCategoryAction(categories[index])),
-                      )
-                    ]),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _makeTitleText("Tags"),
+                SizedBox(height: 10),
+                Container(
+                    height: 150,
+                    child: Swiper(
+                      itemCount: tags.length - 1,
+                      itemBuilder: (context, index) {
+                        return Image.network(tags[index].image);
+                      },
+                      scale: 0.5,
+                      viewportFraction: 0.5,
+                      autoplay: true,
+                      duration: 1000,
+                    )),
+                SizedBox(height: 10),
+                _makeTitleText("Categories"),
+                Container(
+                  height: 500,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: categories.length,
+                      physics: ScrollPhysics(),
+                      gridDelegate:
+                      SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10),
+                      itemBuilder: (context, index) =>
+                          _makeCategoryAction(categories[index])),
+                )
+              ]),
         ));
   }
 
@@ -98,7 +129,8 @@ class _HomeState extends State<Home> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ProductPage(
+                builder: (context) =>
+                    ProductPage(
                       id: category.id,
                       type: "cat",
                       tags: tags,
