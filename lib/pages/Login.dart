@@ -143,6 +143,8 @@ class _LoginState extends State<Login> {
                                   });
                                   bool bol = await Api.login(json: json);
                                   if (bol) {
+                                    print(Vary.user?.id);
+                                    Kpo.getSocket();
                                     Navigator.pop(context);
                                   } else {
                                     Kpo.toast(context, Vary.errMsg);

@@ -3,9 +3,26 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:shopvtwo/models/Product.dart';
 import 'package:shopvtwo/pages/CartPage.dart';
 import 'package:shopvtwo/utils/Vary.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart';
 
 class Kpo {
   static List<Product> cartProducts = [];
+
+  static String SOCKET_ENDPOINT =
+      "${Vary.BASE_URL}/chat?token=${Vary.user?.token}";
+
+  static IO.Socket? socket;
+
+  static getSocket() {
+    socket = IO.io(
+        SOCKET_ENDPOINT,
+        OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
+            .build());
+    socket?.onConnect((_) {
+      print('Socket connect');
+    });
+  }
 
   static Widget getShoppingCart(context) {
     return InkWell(
